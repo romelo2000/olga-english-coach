@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olga English Coach — AI-репетитор английского на вашем Mac</title>
+    <meta name="description" content="Ольга — AI-репетитор английского языка, работающая локально на вашем Mac через Ollama. Без облака, без подписок на серверы, без слежки.">
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --accent: #e94560;
+            --accent-hover: #ff5a75;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6b6b80;
+            --border: #2a2a4a;
+            --success: #16a34a;
+            --chat-bg: #0f3460;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ─── Nav ─── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 14px 0;
+        }
+        .nav-inner {
+            max-width: 1100px; margin: 0 auto; padding: 0 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-size: 20px; font-weight: 700; color: var(--text-primary);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .nav-logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 28px; align-items: center; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none; font-size: 15px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-cta {
+            background: var(--accent); color: white !important;
+            padding: 8px 20px; border-radius: 8px; font-weight: 600;
+        }
+        .nav-cta:hover { background: var(--accent-hover); }
+
+        /* ─── Hero ─── */
+        .hero {
+            padding: 130px 24px 60px;
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+        }
+        .hero-text h1 {
+            font-size: 42px; line-height: 1.15; font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .hero-text h1 .highlight { color: var(--accent); }
+        .hero-text p {
+            font-size: 18px; color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+        .hero-badges {
+            display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px;
+        }
+        .badge {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 6px 14px; border-radius: 20px; font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .badge strong { color: var(--accent); }
+        .hero-cta {
+            display: flex; gap: 14px; flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: var(--accent); color: white;
+            padding: 14px 32px; border-radius: 10px;
+            font-size: 17px; font-weight: 700; text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            display: inline-block;
+        }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn-secondary {
+            background: var(--card-bg); color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 14px 32px; border-radius: 10px;
+            font-size: 17px; font-weight: 600; text-decoration: none;
+            transition: border-color 0.2s;
+        }
+        .btn-secondary:hover { border-color: var(--accent); }
+        .hero-image {
+            display: flex; justify-content: center; align-items: center;
+        }
+        .hero-avatar {
+            width: 320px; height: 320px; border-radius: 24px;
+            background: var(--card-bg); border: 2px solid var(--border);
+            object-fit: cover;
+            box-shadow: 0 20px 60px rgba(233, 69, 96, 0.15);
+        }
+
+        /* ─── Section base ─── */
+        section {
+            max-width: 1100px; margin: 0 auto; padding: 60px 24px;
+        }
+        .section-title {
+            font-size: 32px; font-weight: 800; text-align: center;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            font-size: 17px; color: var(--text-secondary); text-align: center;
+            margin-bottom: 48px;
+        }
+
+        /* ─── Privacy banner ─── */
+        .privacy-banner {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin: 20px auto 0;
+            max-width: 800px;
+        }
+        .privacy-banner h3 {
+            font-size: 22px; margin-bottom: 10px;
+        }
+        .privacy-banner p {
+            color: var(--text-secondary); font-size: 16px;
+        }
+        .privacy-icon { font-size: 36px; margin-bottom: 12px; }
+
+        /* ─── Features grid ─── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .feature-icon { font-size: 32px; margin-bottom: 14px; }
+        .feature-card h3 {
+            font-size: 18px; margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: var(--text-secondary); font-size: 15px;
+        }
+
+        /* ─── Games grid ─── */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .game-card:hover { border-color: var(--accent); }
+        .game-card .emoji { font-size: 40px; margin-bottom: 10px; }
+        .game-card h4 { font-size: 16px; margin-bottom: 6px; }
+        .game-card p { font-size: 13px; color: var(--text-muted); }
+
+        /* ─── Pricing ─── */
+        .pricing-card {
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 480px; margin: 0 auto;
+            text-align: center;
+        }
+        .pricing-card .price {
+            font-size: 48px; font-weight: 800; color: var(--accent);
+            margin: 16px 0 8px;
+        }
+        .pricing-card .price small {
+            font-size: 18px; color: var(--text-muted); font-weight: 400;
+        }
+        .pricing-card ul {
+            list-style: none; text-align: left;
+            margin: 24px 0; padding: 0;
+        }
+        .pricing-card li {
+            padding: 10px 0; border-bottom: 1px solid var(--border);
+            color: var(--text-secondary); font-size: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .pricing-card li:last-child { border-bottom: none; }
+        .pricing-card li .check { color: var(--success); font-weight: bold; }
+
+        /* ─── Requirements ─── */
+        .req-table {
+            max-width: 600px; margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .req-row {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            padding: 14px 20px; border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        .req-row:last-child { border-bottom: none; }
+        .req-row.header {
+            background: rgba(233, 69, 96, 0.08);
+            font-weight: 700; font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .req-row .req-label { font-size: 15px; }
+        .req-row .req-value { font-size: 14px; color: var(--text-secondary); }
+        .req-row .req-badge {
+            font-size: 12px; padding: 3px 10px; border-radius: 12px;
+            text-align: center;
+        }
+        .req-badge.ok { background: rgba(22, 163, 74, 0.15); color: var(--success); }
+        .req-badge.warn { background: rgba(217, 119, 6, 0.15); color: #d97706; }
+        .req-badge.no { background: rgba(220, 38, 38, 0.15); color: #dc2626; }
+
+        /* ─── FAQ ─── */
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 18px 24px; cursor: pointer;
+            font-weight: 600; font-size: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: color 0.2s;
+        }
+        .faq-q:hover { color: var(--accent); }
+        .faq-q .arrow { transition: transform 0.2s; font-size: 14px; }
+        .faq-q.open .arrow { transform: rotate(180deg); }
+        .faq-a {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease;
+            color: var(--text-secondary); font-size: 15px;
+        }
+        .faq-a.open { max-height: 300px; }
+        .faq-a-inner { padding: 0 24px 18px; }
+
+        /* ─── Footer ─── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        footer a { color: var(--text-secondary); text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 110px; }
+            .hero-cta { justify-content: center; }
+            .hero-image { order: -1; }
+            .hero-avatar { width: 200px; height: 200px; }
+            .hero-text h1 { font-size: 30px; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .section-title { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── Nav ─── -->
+<nav>
+    <div class="nav-inner">
+        <div class="nav-logo">🧑‍🏫 <span>Olga</span> English Coach</div>
+        <div class="nav-links">
+            <a href="#features">Возможности</a>
+            <a href="#games">Игры</a>
+            <a href="#pricing">Цена</a>
+            <a href="#faq">FAQ</a>
+            <a href="#pricing" class="nav-cta">Купить</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<div class="hero">
+    <div class="hero-text">
+        <h1>Английский с <span class="highlight">AI-репетитором</span>, который живёт на вашем Mac</h1>
+        <p>Ольга — персональный AI-коуч для изучения английского. Работает локально через Ollama: без облака, без подписок на серверы, без слежки. Ваш прогресс и диалоги остаются только на вашем компьютере.</p>
+        <div class="hero-badges">
+            <div class="badge">🔒 <strong>100% офлайн</strong></div>
+            <div class="badge">🧠 <strong>Локальный AI</strong> (Ollama)</div>
+            <div class="badge">🍎 <strong>macOS</strong> Apple Silicon</div>
+            <div class="badge">🗣 <strong>Голос</strong> + текст</div>
+            <div class="badge">🎮 <strong>6 игр</strong></div>
+        </div>
+        <div class="hero-cta">
+            <a href="#pricing" class="btn-primary">Купить за $29</a>
+            <a href="#features" class="btn-secondary">Узнать больше</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <img src="olga_avatar.png" alt="Olga — AI English Coach" class="hero-avatar">
+    </div>
+</div>
+
+<!-- ─── Privacy banner ─── -->
+<div style="padding: 0 24px;">
+    <div class="privacy-banner">
+        <div class="privacy-icon">🔐</div>
+        <h3>Никаких облаков. Никаких серверов. Никаких утечек.</h3>
+        <p>Ольга работает через <strong>Ollama</strong> — локальный AI-движок. Все диалоги, голосовые записи, прогресс обучения и персональные данные хранятся только на вашем Mac. Ничего не уходит в интернет.</p>
+    </div>
+</div>
+
+<!-- ─── Features ─── -->
+<section id="features">
+    <h2 class="section-title">Что умеет Ольга</h2>
+    <p class="section-subtitle">22 режима практики, адаптивный курс CEFR, интервальное повторение, голосовой ввод и вывод</p>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>Живые диалоги</h3>
+            <p>Веди разговор с Ольгой на английском. Она исправляет ошибки, объясняет на русском и поддерживает беседу вопросами.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📐</div>
+            <h3>Грамматика по уровням</h3>
+            <p>CEFR-структурированный курс: A1 → C2. Теория, примеры, упражнения с автоматической проверкой и объяснением ошибок.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔁</div>
+            <h3>Интервальное повторение (SRS)</h3>
+            <p>Алгоритм SM-2: слова повтораются в оптимальные моменты. Забываешь меньше, учишь быстрее.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎤</div>
+            <h3>Голосовой ввод и вывод</h3>
+            <p>Говори с Ольгой голосом — она распознаёт речь через macOS Speech. Ответы озвучиваются через встроенные голоса macOS.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Аналитика и прогресс</h3>
+            <p>Трекинг навыков: грамматика, словарь, говорение, аудирование, письмо. Streak-система, XP, еженедельные цели.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📖</div>
+            <h3>Слово и идиома дня</h3>
+            <p>Каждый день — новое слово с IPA, переводом и примером. Идиома дня с объяснением и контекстом. Одно нажатие — в SRS.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">✍️</div>
+            <h3>Письмо и диктанты</h3>
+            <p>Пиши тексты — Ольга проверит грамматику, стиль и лексику. Диктанты с голосовым воспроизведением и проверкой точности.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎭</div>
+            <h3>Ролевые игры</h3>
+            <p>Симуляция реальных ситуаций: собеседование, ресторан, аэропорт. Ольга играет второго персонажа и даёт обратную связь.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Чтение и адаптация статей</h3>
+            <p>Вставь URL любой статьи — Ольга адаптирует текст под ваш уровень, выделит ключевые слова и задаст вопросы.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>AI-генерация рассказов</h3>
+            <p>Ольга пишет короткие рассказы с использованием ваших SRS-слов. Читайте, слушайте, отвечайте на вопросы.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3>Knowledge Graph</h3>
+            <p>Введи слово — Ольга построит граф синонимов, антонимов, коллокаций и word family. Викторина по графу.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>22 типа практики</h3>
+            <p>Shadowing, Minimal Pairs, Collocations, Phrasal Verbs, Dictogloss, Input Flood, Pushed Output, Lexical Chunks и др.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Games ─── -->
+<section id="games">
+    <h2 class="section-title">Учись, играя</h2>
+    <p class="section-subtitle">6 интерактивных игр на английском, генерируемых локальным AI</p>
+    <div class="games-grid">
+        <div class="game-card">
+            <div class="emoji">⚔️</div>
+            <h4>Word Battle</h4>
+            <p>Переведи слово быстрее таймера. Очки за скорость и точность.</p>
+        </div>
+        <div class="game-card">
+            <div class="emoji">🌍</div>
+            <h4>Language Survival</h4>
+            <p>Выживи в англоязычной стране. Выбери правильную фразу.</p>
+        </div>
+        <div class="game-card">
+            <div class="emoji">🕵️</div>
+            <h4>Language Detective</h4>
+            <p>Расследуй дело. Допрашивай NPC, собери улики, найди виновного.</p>
+        </div>
+        <div class="game-card">
+            <div class="emoji">🔄</div>
+            <h4>Time Loop</h4>
+            <p>Застрял во временной петле. Учись, чтобы разорвать её.</p>
+        </div>
+        <div class="game-card">
+            <div class="emoji">🔍</div>
+            <h4>Contexto</h4>
+            <p>Угадай слово по смыслу. Ольга подсказывает близость 1-100.</p>
+        </div>
+        <div class="game-card">
+            <div class="emoji">🤐</div>
+            <h4>Taboo Talks</h4>
+            <p>Опиши слово, не называя его. Потом угадай слова Ольги.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Requirements ─── -->
+<section id="requirements">
+    <h2 class="section-title">Системные требования</h2>
+    <p class="section-subtitle">Ольга работает на Mac с Apple Silicon (M1/M2/M3/M4) и локальным Ollama</p>
+    <div class="req-table">
+        <div class="req-row header">
+            <div>Mac</div>
+            <div>RAM</div>
+            <div>Поддержка</div>
+        </div>
+        <div class="req-row">
+            <div class="req-label">M1 / M2 / M3 / M4</div>
+            <div class="req-value">8 ГБ</div>
+            <div><span class="req-badge warn">Минимум</span></div>
+        </div>
+        <div class="req-row">
+            <div class="req-label">M1 / M2 / M3 / M4</div>
+            <div class="req-value">16 ГБ</div>
+            <div><span class="req-badge ok">Рекомендуется</span></div>
+        </div>
+        <div class="req-row">
+            <div class="req-label">M1 Pro / M2 Pro / M3 Pro+</div>
+            <div class="req-value">32 ГБ+</div>
+            <div><span class="req-badge ok">Идеально</span></div>
+        </div>
+        <div class="req-row">
+            <div class="req-label">Intel Mac</div>
+            <div class="req-value">8-16 ГБ</div>
+            <div><span class="req-badge no">Не рекомендуется</span></div>
+        </div>
+    </div>
+    <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-top: 16px;">
+        Также требуется: macOS 13+ (Ventura/Sonoma/Sequoia/Tahoe), ~5 ГБ для модели Ollama
+    </p>
+</section>
+
+<!-- ─── Pricing ─── -->
+<section id="pricing">
+    <h2 class="section-title">Одна покупка. Никаких подписок.</h2>
+    <p class="section-subtitle">Платите один раз — пользуетесь вечно. Без ежемесячных платежей.</p>
+    <div class="pricing-card">
+        <h3 style="font-size: 22px;">Полная лицензия Olga English Coach</h3>
+        <div class="price">$29 <small>один раз</small></div>
+        <p style="color: var(--text-muted); font-size: 14px;">7 дней бесплатного пробного периода</p>
+        <ul>
+            <li><span class="check">✓</span> Все 22 режима практики</li>
+            <li><span class="check">✓</span> Все 6 игр</li>
+            <li><span class="check">✓</span> Грамматический курс A1–C2</li>
+            <li><span class="check">✓</span> Интервальное повторение (SRS)</li>
+            <li><span class="check">✓</span> Голосовой ввод и вывод</li>
+            <li><span class="check">✓</span> Аналитика и трекинг прогресса</li>
+            <li><span class="check">✓</span> AI-генерация рассказов и адаптация статей</li>
+            <li><span class="check">✓</span> Knowledge Graph</li>
+            <li><span class="check">✓</span> 100% офлайн — без облака</li>
+            <li><span class="check">✓</span> Пожизненные обновления</li>
+        </ul>
+        <!-- TODO: Replace with your PayPro Global / Gumroad checkout link -->
+        <a href="#" class="btn-primary" style="width: 100%; display: block; text-align: center;">
+            Купить сейчас — $29
+        </a>
+        <p style="color: var(--text-muted); font-size: 13px; margin-top: 14px;">
+            После оплаты вы получите лицензионный ключ и ссылку на скачивание
+        </p>
+    </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section id="faq">
+    <h2 class="section-title">Частые вопросы</h2>
+    <div style="max-width: 700px; margin: 0 auto;">
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                Что такое Ollama и зачем он нужен?
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <div class="faq-a-inner">
+                    Ollama — это бесплатная программа для запуска AI-моделей локально на вашем Mac. Ольга использует Ollama для генерации диалогов, упражнений, игр и объяснений. Приложение автоматически устанавливает Ollama при первом запуске — вам не нужно ничего настраивать вручную.
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                Действительно ли всё работает без интернета?
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <div class="faq-a-inner">
+                    Да. После установки Ollama и загрузки AI-модели (один раз, ~5 ГБ) всё работает полностью офлайн. Диалоги, игры, упражнения, голосовое распознавание — всё на вашем Mac. Интернет нужен только для скачивания приложения и модели.
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                Какой уровень английского нужен для начала?
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <div class="faq-a-inner">
+                    Ольга адаптируется к вашему уровню — от A1 (начинающий) до C2 (свободный). При первом запуске предлагается placement-тест для определения уровня. Если вы начинающий — Ольга будет объяснять простыми словами на русском.
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                Подойдёт ли мне 8 ГБ Mac?
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <div class="faq-a-inner">
+                    Да, но впритык. AI-модель (~5 ГБ) поместится в 8 ГБ, но при работе других приложений может быть медленно. 16 ГБ — комфортно. 32 ГБ+ — идеально, можно использовать большие модели через MLX-ускорение.
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                Что если я не доволен?
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <div class="faq-a-inner">
+                    У вас есть 7 дней бесплатного пробного периода — все функции без ограничений. Если после покупки вы недовольны, напишите нам в течение 14 дней для полного возврата.
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                Будут ли обновления?
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <div class="faq-a-inner">
+                    Да. Приложение проверяет обновления автоматически и предлагает установить новую версию. Все обновления бесплатны для владельцев лицензии.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer>
+    <p>Olga English Coach &copy; 2026 — AI-репетитор английского для Mac</p>
+    <p style="margin-top: 8px;">
+        <a href="https://github.com/romankrivoruchko/olga-english-coach">GitHub</a> · 
+        Поддержка: <a href="mailto:olga.english.coach@gmail.com">olga.english.coach@gmail.com</a>
+    </p>
+</footer>
+
+<script>
+function toggleFaq(el) {
+    const answer = el.nextElementSibling;
+    const isOpen = el.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    // Open clicked
+    if (!isOpen) {
+        el.classList.add('open');
+        answer.classList.add('open');
+    }
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
