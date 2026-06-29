@@ -303,7 +303,7 @@
             <a href="#games">Игры</a>
             <a href="#pricing">Цена</a>
             <a href="#faq">FAQ</a>
-            <a href="#pricing" class="nav-cta">Купить</a>
+            <a href="https://boosty.to/olga_english_coach" target="_blank" class="nav-cta">Купить</a>
         </div>
     </div>
 </nav>
@@ -321,7 +321,7 @@
             <div class="badge">🎮 <strong>6 игр</strong></div>
         </div>
         <div class="hero-cta">
-            <a href="#pricing" class="btn-primary">Купить за $29</a>
+            <a href="https://boosty.to/olga_english_coach" target="_blank" class="btn-primary">Купить за 2500 ₽</a>
             <a href="#features" class="btn-secondary">Узнать больше</a>
         </div>
     </div>
@@ -357,7 +357,7 @@
         <div class="feature-card">
             <div class="feature-icon">🔁</div>
             <h3>Интервальное повторение (SRS)</h3>
-            <p>Алгоритм SM-2: слова повтораются в оптимальные моменты. Забываешь меньше, учишь быстрее.</p>
+            <p>Алгоритм SM-2: слова повторяются в оптимальные моменты. Забываешь меньше, учишь быстрее.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">🎤</div>
@@ -487,7 +487,7 @@
     <p class="section-subtitle">Платите один раз — пользуетесь вечно. Без ежемесячных платежей.</p>
     <div class="pricing-card">
         <h3 style="font-size: 22px;">Полная лицензия Olga English Coach</h3>
-        <div class="price">$29 <small>один раз</small></div>
+        <div class="price">2500 ₽ <small>один раз</small></div>
         <p style="color: var(--text-muted); font-size: 14px;">7 дней бесплатного пробного периода</p>
         <ul>
             <li><span class="check">✓</span> Все 22 режима практики</li>
@@ -501,9 +501,8 @@
             <li><span class="check">✓</span> 100% офлайн — без облака</li>
             <li><span class="check">✓</span> Пожизненные обновления</li>
         </ul>
-        <!-- TODO: Replace with your PayPro Global / Gumroad checkout link -->
-        <a href="#" class="btn-primary" style="width: 100%; display: block; text-align: center;">
-            Купить сейчас — $29
+        <a href="https://boosty.to/olga_english_coach" target="_blank" class="btn-primary" style="width: 100%; display: block; text-align: center;">
+            Купить сейчас — 2500 ₽
         </a>
         <p style="color: var(--text-muted); font-size: 13px; margin-top: 14px;">
             После оплаты вы получите лицензионный ключ и ссылку на скачивание
@@ -588,7 +587,7 @@
 <footer>
     <p>Olga English Coach &copy; 2026 — AI-репетитор английского для Mac</p>
     <p style="margin-top: 8px;">
-        <a href="https://github.com/romankrivoruchko/olga-english-coach">GitHub</a> · 
+        <a href="https://github.com/romelo2000/olga-english-coach">GitHub</a> · 
         Поддержка: <a href="mailto:olga.english.coach@gmail.com">olga.english.coach@gmail.com</a>
     </p>
 </footer>
@@ -597,17 +596,14 @@
 function toggleFaq(el) {
     const answer = el.nextElementSibling;
     const isOpen = el.classList.contains('open');
-    // Close all
     document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
     document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
-    // Open clicked
     if (!isOpen) {
         el.classList.add('open');
         answer.classList.add('open');
     }
 }
 
-// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
         const target = document.querySelector(a.getAttribute('href'));
