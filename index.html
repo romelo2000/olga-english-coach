@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olga English Coach v2.1.1 — AI-репетитор английского на вашем Mac</title>
-    <meta name="description" content="Ольга — AI-репетитор английского языка, работающая локально на вашем Mac через Ollama. Без облака, без подписок на серверы, без слежки.">
+    <title>Olga English Coach v2.1.1 — AI-репетитор английского для Mac и Windows</title>
+    <meta name="description" content="Ольга — AI-репетитор английского языка, работающая локально на вашем Mac или Windows PC через Ollama. Без облака, без подписок на серверы, без слежки.">
     <style>
         :root {
             --bg: #1a1a2e;
@@ -311,19 +311,20 @@
 <!-- ─── Hero ─── -->
 <div class="hero">
     <div class="hero-text">
-        <h1>Английский с <span class="highlight">AI-репетитором</span>, который живёт на вашем Mac</h1>
+        <h1>Английский с <span class="highlight">AI-репетитором</span>, который живёт на вашем компьютере</h1>
         <p>Ольга — персональный AI-коуч для изучения английского. Работает локально через Ollama: без облака, без подписок на серверы, без слежки. Ваш прогресс и диалоги остаются только на вашем компьютере.</p>
         <div class="hero-badges">
             <div class="badge">🔒 <strong>100% офлайн</strong></div>
             <div class="badge">🧠 <strong>Локальный AI</strong> (Ollama)</div>
             <div class="badge">🍎 <strong>macOS</strong> Apple Silicon</div>
+            <div class="badge">🪟 <strong>Windows</strong> 10/11</div>
             <div class="badge">🗣 <strong>Голос</strong> + текст</div>
             <div class="badge">🎮 <strong>6 игр</strong></div>
             <div class="badge">✨ <strong>v2.1.1</strong></div>
         </div>
         <div class="hero-cta">
-            <a href="https://boosty.to/olga_english_coach" target="_blank" class="btn-primary">Купить за 2500 ₽</a>
-            <a href="#features" class="btn-secondary">Узнать больше</a>
+            <a href="https://github.com/romelo2000/olga-english-coach/releases/latest/download/OlgaEnglishCoach-2.1.1.dmg" class="btn-primary" style="text-decoration:none;">⬇ Скачать для Mac</a>
+            <a href="https://github.com/romelo2000/olga-english-coach/releases/latest/download/OlgaEnglishCoach-Setup-2.1.1.exe" class="btn-secondary" style="text-decoration:none;">⬇ Скачать для Windows</a>
         </div>
     </div>
     <div class="hero-image">
@@ -336,6 +337,7 @@
     <div style="max-width: 800px; margin: 0 auto; background: rgba(22, 163, 74, 0.1); border: 1px solid rgba(22, 163, 74, 0.3); border-radius: 12px; padding: 20px 28px;">
         <h3 style="font-size: 18px; color: var(--success); margin-bottom: 8px;">✨ Что нового в v2.1.1</h3>
         <ul style="color: var(--text-secondary); font-size: 14px; padding-left: 20px; line-height: 1.8;">
+            <li>🪟 <strong>Поддержка Windows 10/11</strong> — полный аналог macOS версии</li>
             <li>Автоматическое переподключение при падении Ollama (без потери диалога)</li>
             <li>Улучшенная защита лицензии: привязка к устройству + подпись данных</li>
             <li>Стриминг ответов AI в реальном времени (без задержек)</li>
@@ -351,7 +353,7 @@
     <div class="privacy-banner">
         <div class="privacy-icon">🔐</div>
         <h3>Никаких облаков. Никаких серверов. Никаких утечек.</h3>
-        <p>Ольга работает через <strong>Ollama</strong> — локальный AI-движок. Все диалоги, голосовые записи, прогресс обучения и персональные данные хранятся только на вашем Mac. Ничего не уходит в интернет.</p>
+        <p>Ольга работает через <strong>Ollama</strong> — локальный AI-движок. Все диалоги, голосовые записи, прогресс обучения и персональные данные хранятся только на вашем компьютере. Ничего не уходит в интернет.</p>
     </div>
 </div>
 
@@ -378,7 +380,7 @@
         <div class="feature-card">
             <div class="feature-icon">🎤</div>
             <h3>Голосовой ввод и вывод</h3>
-            <p>Говори с Ольгой голосом — она распознаёт речь через macOS Speech. Ответы озвучиваются через встроенные голоса macOS.</p>
+            <p>Говори с Ольгой голосом — она распознаёт речь через macOS Speech (Mac) или Windows SAPI (Windows). Ответы озвучиваются через встроенные голоса системы.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">📊</div>
@@ -464,27 +466,37 @@
 <!-- ─── Requirements ─── -->
 <section id="requirements">
     <h2 class="section-title">Системные требования</h2>
-    <p class="section-subtitle">Ольга работает на Mac с Apple Silicon (M1/M2/M3/M4) и локальным Ollama</p>
+    <p class="section-subtitle">Ольга работает на Mac и Windows с локальным Ollama</p>
     <div class="req-table">
         <div class="req-row header">
-            <div>Mac</div>
+            <div>Платформа</div>
             <div>RAM</div>
             <div>Поддержка</div>
         </div>
         <div class="req-row">
-            <div class="req-label">M1 / M2 / M3 / M4</div>
+            <div class="req-label">Mac M1/M2/M3/M4</div>
             <div class="req-value">8 ГБ</div>
             <div><span class="req-badge warn">Минимум</span></div>
         </div>
         <div class="req-row">
-            <div class="req-label">M1 / M2 / M3 / M4</div>
+            <div class="req-label">Mac M1/M2/M3/M4</div>
             <div class="req-value">16 ГБ</div>
             <div><span class="req-badge ok">Рекомендуется</span></div>
         </div>
         <div class="req-row">
-            <div class="req-label">M1 Pro / M2 Pro / M3 Pro+</div>
+            <div class="req-label">Mac M-Pro/Max</div>
             <div class="req-value">32 ГБ+</div>
             <div><span class="req-badge ok">Идеально</span></div>
+        </div>
+        <div class="req-row">
+            <div class="req-label">Windows 10/11 x64</div>
+            <div class="req-value">8 ГБ</div>
+            <div><span class="req-badge warn">Минимум</span></div>
+        </div>
+        <div class="req-row">
+            <div class="req-label">Windows 10/11 x64</div>
+            <div class="req-value">16 ГБ</div>
+            <div><span class="req-badge ok">Рекомендуется</span></div>
         </div>
         <div class="req-row">
             <div class="req-label">Intel Mac</div>
@@ -493,7 +505,7 @@
         </div>
     </div>
     <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-top: 16px;">
-        Также требуется: macOS 13+ (Ventura/Sonoma/Sequoia/Tahoe), ~5 ГБ для модели Ollama
+        macOS 13+ (Ventura/Sonoma/Sequoia/Tahoe) или Windows 10/11 x64, ~10 ГБ для Ollama + модели
     </p>
 </section>
 
@@ -537,7 +549,7 @@
             </div>
             <div class="faq-a">
                 <div class="faq-a-inner">
-                    Ollama — это бесплатная программа для запуска AI-моделей локально на вашем Mac. Ольга использует Ollama для генерации диалогов, упражнений, игр и объяснений. Приложение автоматически устанавливает Ollama при первом запуске — вам не нужно ничего настраивать вручную.
+                    Ollama — это бесплатная программа для запуска AI-моделей локально на вашем компьютере. Ольга использует Ollama для генерации диалогов, упражнений, игр и объяснений. Приложение автоматически устанавливает Ollama при первом запуске — вам не нужно ничего настраивать вручную.
                 </div>
             </div>
         </div>
@@ -548,7 +560,7 @@
             </div>
             <div class="faq-a">
                 <div class="faq-a-inner">
-                    Да. После установки Ollama и загрузки AI-модели (один раз, ~5 ГБ) всё работает полностью офлайн. Диалоги, игры, упражнения, голосовое распознавание — всё на вашем Mac. Интернет нужен только для скачивания приложения и модели.
+                    Да. После установки Ollama и загрузки AI-модели (один раз, ~5 ГБ) всё работает полностью офлайн. Диалоги, игры, упражнения, голосовое распознавание — всё на вашем компьютере. Интернет нужен только для скачивания приложения и модели.
                 </div>
             </div>
         </div>
@@ -565,12 +577,12 @@
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="toggleFaq(this)">
-                Подойдёт ли мне 8 ГБ Mac?
+                Подойдёт ли мне компьютер с 8 ГБ RAM?
                 <span class="arrow">▼</span>
             </div>
             <div class="faq-a">
                 <div class="faq-a-inner">
-                    Да, но впритык. AI-модель (~5 ГБ) поместится в 8 ГБ, но при работе других приложений может быть медленно. 16 ГБ — комфортно. 32 ГБ+ — идеально, можно использовать большие модели через MLX-ускорение.
+                    Да, но впритык. AI-модель (~5 ГБ) поместится в 8 ГБ, но при работе других приложений может быть медленно. 16 ГБ — комфортно. 32 ГБ+ — идеально, можно использовать большие модели.
                 </div>
             </div>
         </div>
@@ -601,7 +613,7 @@
 
 <!-- ─── Footer ─── -->
 <footer>
-    <p>Olga English Coach v2.1.1 &copy; 2026 — AI-репетитор английского для Mac</p>
+    <p>Olga English Coach v2.1.1 &copy; 2026 — AI-репетитор английского для Mac и Windows</p>
     <p style="margin-top: 8px;">
         <a href="https://github.com/romelo2000/olga-english-coach">GitHub</a> · 
         Поддержка: <a href="mailto:olga.english.coach@gmail.com">olga.english.coach@gmail.com</a>
