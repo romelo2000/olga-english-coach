@@ -1,0 +1,32 @@
+# Build artifacts
+build/
+dist/
+*.spec
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# macOS
+.DS_Store
+*.app.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# User data
+license.json
+usage_stats.json
+chat_history.json
+course_state.json
+srs_state.json
+theme_pref.json
+*.db
+*.log
+
+# Virtual environments
+venv/
+env/
+.venv/
